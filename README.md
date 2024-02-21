@@ -1,0 +1,2 @@
+# Jupiter Toys E2E Test Suite
+Automated Test Suite deployed with a custom GitHub Actions runner that will run E2E on matching pull requests or branch merges for the Jupiter Toys Web Store code repository.
