@@ -1,7 +1,36 @@
 # Jupiter Toys E2E Test Suite
 Automated Test Suite deployed with a custom GitHub Actions runner that will run E2E tests on matching pull requests or branch merges for the Jupiter Toys Web Store code repository.
 
-## Installation
+## Running Locally
+Running the tests locally will allow you to run tests in parallel mode for faster results.
+
+### Installation
+You can either run this locally with Bun (recommended) or with Node.js
+They have their own installation and use instructions.
+
+#### Bun
+1. [Install bun](https://bun.sh/docs/installation)
+2. Run `bun install`
+3. Run `bunx playwright install`
+4. Run tests with `bunx playwright test`
+
+To run in headed mode (to see how the browser is interacting with the page)
+```bash
+bunx playwright test --headed
+```
+
+#### Node
+1. [Install Node.js](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)
+2. Run `npm install`
+3. Run `npx playwright install`
+4. Run tests with `npx playwright test`
+
+To run in headed mode (to see how the browser is interacting with the page)
+```bash
+npxx playwright test --headed
+```
+
+## CI Installation
 You can opt into these e2e tests via GitHub actions by simply placing the following YAML file into your GitHub repository at `.github/workflows/e2e.yaml
 
 ```yaml
