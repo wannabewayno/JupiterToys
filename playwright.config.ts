@@ -14,7 +14,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   // Run all tests in parallel.
-  fullyParallel: false,
+  fullyParallel: true,
 
   // Reporter to use
   reporter: 'html',
@@ -29,16 +29,20 @@ export default defineConfig({
   // Configure projects for major browsers.
   projects: [
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'edge',
+      use: { ...devices['Desktop Edge'] },
     },
     {
       name: 'chrome',
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
     },
+    // {
+    //   name: 'Safari',
+    //   use: { ...devices['Desktop Safari'] },
+    // }
   ],
 });

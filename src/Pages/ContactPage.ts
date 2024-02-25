@@ -17,19 +17,22 @@ type NonMandatoryContactFields = {
 type ContactFields = MandatoryContactFields & NonMandatoryContactFields
 
 class ContactPageModel extends BasePage {
-  // Components
+  // Shared Components
   private readonly navbar: Navbar;
 
   // Page Elements
   readonly contactForm: Locator;
+  readonly contactFormSuccessMessage: Locator;
+  private readonly contactFormSubmitButton: Locator;
+  readonly contactFormLoadingIndicator: Locator;
+
+  // Form Fields
   readonly forenameField: FormField;
   readonly surnameField: FormField;
   readonly messageField: FormField;
   readonly emailField: FormField;
   readonly telephoneField: FormField;
 
-  // Submit button
-  private readonly submitContactFormButton: Locator;
 
   constructor(public readonly page: Page) {
     super(page, '/#/contact');
@@ -49,43 +52,49 @@ class ContactPageModel extends BasePage {
     // I've noticed that the Submit button is not a button and the form is generically named.
     // This ensures that we look for a 'submit' thing inside a form
     // Hopefully this future proofs this test until the developers use better a11y standards
-    this.submitContactFormButton = this.contactForm.getByText('Submit');
+    this.contactFormSubmitButton = this.contactForm.getByText('Submit');
+
+    // This element also doesn't have the best a11y. If we're looking for a thanks message, then that's what we're chasing.
+    this.contactFormSuccessMessage = this.page.getByText(/thanks/i);
+
+    // This also doesn't have the best a11y, just a div with a class 'modal'. Using the 'sending feedback' text here to be more declaritive.
+    this.contactFormLoadingIndicator = this.page.getByText(/sending.*feedback/i);
   }
 
   async fillContactForm({ email, forename, message, surname, telephone }: ContactFields) {
     await this.fillMandatoryContactFields({ email, forename, message });
-    await this.EnterContactSurname(surname);
-    await this.EnterContactTelephone(telephone);
+    await this.enterContactSurname(surname);
+    await this.enterContactTelephone(telephone);
   }
 
   async fillMandatoryContactFields({ forename, email, message }: MandatoryContactFields) {
-    await this.EnterContactForename(forename);
-    await this.EnterContactEmail(email);
-    await this.EnterContactMessage(message);
+    await this.enterContactForename(forename);
+    await this.enterContactEmail(email);
+    await this.enterContactMessage(message);
   }
 
-  async EnterContactForename(forename: string = 'Haywood') {
+  async enterContactForename(forename: string = 'Haywood') {
     await this.forenameField.fill(forename);
   }
 
-  async EnterContactSurname(surname: string = 'Jablomey') {
+  async enterContactSurname(surname: string = 'Jablomey') {
     await this.surnameField.fill(surname)
   }
 
-  async EnterContactEmail(email: string = 'valid@email.com') {
+  async enterContactEmail(email: string = 'valid@email.com') {
     await this.emailField.fill(email)
   }
 
-  async EnterContactTelephone(telephone: string = '1300655506') {
+  async enterContactTelephone(telephone: string = '1300655506') {
     await this.telephoneField.fill(telephone)
   }
 
-  async EnterContactMessage(message: string = 'Shrek is love, shrek is life') {
+  async enterContactMessage(message: string = 'Shrek is love, shrek is life') {
     await this.messageField.fill(message)
   }
 
-  async SumitContactForm() {
-    await this.submitContactFormButton.click();
+  async submitContactForm() {
+    await this.contactFormSubmitButton.click();
   }
 }
 
