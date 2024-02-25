@@ -21,8 +21,8 @@ export type HomePage = HomePageModel & Page;
 // We return a proxy that directs all keys not intended for the instance of ContactPage to ContactPage.page
 // Allows seemless integration of our custom page model with Playwright's make our tests more read-able for assetians.
 export const createHomePage = (page: Page): HomePage => {
-  const homePageMethods = new HomePageModel(page);
-  return new Proxy(homePageMethods, {
+  const homePage = new HomePageModel(page);
+  return new Proxy(homePage, {
     get(target, prop) {
       // Attempt to get the property from HomePageModel first
       if (prop in target) return (target as any)[prop];

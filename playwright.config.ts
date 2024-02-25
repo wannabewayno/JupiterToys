@@ -14,7 +14,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   // Run all tests in parallel.
-  fullyParallel: true,
+  fullyParallel: false,
 
   // Reporter to use
   reporter: 'html',
