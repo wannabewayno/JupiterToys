@@ -9,7 +9,6 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@playwright/test": "^1.41.2",
-    "awilix": "^10.0.1"
+    "@playwright/test": "^1.41.2"
   }
 }
