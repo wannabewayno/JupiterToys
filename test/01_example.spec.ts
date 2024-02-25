@@ -1,14 +1,18 @@
 import { test, expect } from '../src/Fixtures/HomePage';
 
-test('has title', async ({ homePage, page }) => {
+test('has title', async ({ homePage }) => {
+  // Navigate to the Home Page
   await homePage.navigate();
-  console.log(homePage.page.url());
-  console.log('On Home page?', homePage.isCurrentlyActive());
+
+  // Assert that we are indeed on the home page before continuing.
+  expect(homePage.isCurrentlyActive()).toBeTruthy();
 
   // Expect a title "to contain" a substring.
-  await expect(homePage.page).toHaveTitle(/Jupiter Toys/);
+  await expect(homePage).toHaveTitle(/Jupiter Toys/);
 
-  await homePage.clickOnContactLink();
-  console.log(homePage.page.url());
-  console.log('On Home page?', homePage.isCurrentlyActive());
+  // Click on the contact link.
+  await homePage.clickOnContact();
+
+  // Assert that we are no longer on the home page
+  expect(homePage.isCurrentlyActive()).toBeFalsy();
 });

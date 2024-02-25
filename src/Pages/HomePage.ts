@@ -1,10 +1,11 @@
 import type { Page, Locator } from '@playwright/test';
+import { Navbar } from '../Components/Navbar';
 
-export class HomePage {
-  private readonly contactLink: Locator;
+class HomePageModel {
+  private readonly navbar: Navbar;
 
   constructor(public readonly page: Page) {
-    this.contactLink = this.page.getByRole('link', { name: 'contact' });
+    this.navbar = new Navbar(page);
   }
 
   async navigate() {
@@ -15,7 +16,23 @@ export class HomePage {
     return this.page.url().endsWith('/#/home');
   }
 
-  async clickOnContactLink() {
-    await this.contactLink.click();
+  async clickOnContact() {
+    await this.navbar.clickOnContact();
   }
+}
+
+// Union type that combines Playwright's Page with our custom HomePageModel
+// Allows seemless integration of Custom HomePage and Page for test read-ability.
+export type HomePage = HomePageModel & Page;
+
+export const createHomePage = (page: Page): HomePage => {
+  const homePageMethods = new HomePageModel(page);
+  return new Proxy(homePageMethods, {
+    get(target, prop) {
+      // Attempt to get the property from HomePageModel first
+      if (prop in target) return (target as any)[prop];
+      // Otherwise, delegate to the Page object
+      return (page as any)[prop];
+    },
+  }) as HomePage;
 }
