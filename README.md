@@ -16,38 +16,29 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v1
-      - name: Install dependencies
-        run: bun install
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: bunx playwright test
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - name: Run E2E Tests
+        uses: wannabewayno/JupiterToys@master
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          BASE_URL: 'localhost:3000'
 ```
 
 ### What does this do?
-This run e2e tests everytime a matching branches are pushed to main/master or a pull rquest is submitted.
-You cna configure github to block pull requests until tests finish running and pass if you desire. Otherwise it will be a reminder that things are either working or not.
+This runs the JupiterToys action to run e2e tests everytime matching branches are pushed to main/master or a pull rquest is opened against main, master.
+You can configure github to block merging pull requests until tests finish running, and even block the pull request from being merged if you desire. Otherwise github will show the status of this test (pass/fail/running) in the pull requsest UI.
+
+An example can be seen 
 
 ### Environemnts
-It would be nice to test our Code before it goes to a hosted environment and on testing/staging builds before it reaches productions. The current test runner has the ability to do this with a simple environment variable.
+It would be nice to test our Code before it goes to a hosted environment and on testing/staging builds before it reaches production. The current test runner has the ability to do this with a simple environment variable.
 
 #### BASE_URL
 ```bash
-BASE_URL=<base-environment-url>
+BASE_URL=http://your.domain.com
 ```
 Setting the ENV var `BASE_URL` before running the action will allow you to target the runner's traffic to that domain.
 
-
 ### Pre-deployment
-Using this strategy pre-deployment will allow a developer to spin up a webserver locally via native runner or a docker container and the test runner will then make all requests to the BASE_URL instead. This allows you to effectively test code changes pre-deployment so you can take action before anything get's launched to the world.
+Using this strategy pre-deployment will allow a developer to spin up a webserver locally via checking out the code and running a webserver or spinning up a docker container. The test runner will then make all requests to the BASE_URL instead (hosted on the same machine). This allows you to effectively test code changes pre-deployment so you can take action before anything get's launched to the world.
 
 ### Post-deployment
 After a deployment is successfull, set the runner to the BASE_URL of the environment that's been deployed (testing/staging/production) to test that the new deployment works as intended.
