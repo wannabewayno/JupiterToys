@@ -9,5 +9,6 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Run E2E Tests
         uses: ./
