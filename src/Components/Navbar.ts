@@ -26,6 +26,6 @@ export class Navbar {
   }
 
   async clickOnContact() {
-    await this.contactLink.click();
+    return this.contactLink.click().then(() => this.page.locator('form').waitFor({ state: 'visible' }));
   }
 }
