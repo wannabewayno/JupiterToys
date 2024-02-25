@@ -1,19 +1,13 @@
 import type { Page, Locator } from '@playwright/test';
+import { BasePage } from '../Classes/BasePage';
 import { Navbar } from '../Components/Navbar';
 
-class HomePageModel {
+class HomePageModel extends BasePage {
   private readonly navbar: Navbar;
 
   constructor(public readonly page: Page) {
+    super(page, '/#/home');
     this.navbar = new Navbar(page);
-  }
-
-  async navigate() {
-    await this.page.goto('/#/home');
-  }
-
-  isCurrentlyActive() {
-    return this.page.url().endsWith('/#/home');
   }
 
   async clickOnContact() {
