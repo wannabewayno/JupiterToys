@@ -18,12 +18,15 @@ runs:
     - uses: oven-sh/setup-bun@v1
 
     - name: Install dependencies
+      shell: bash
       run: bun install
 
     - name: Install Playwright Browsers
+      shell: bash
       run: bunx playwright install --with-deps
 
     - name: Run Playwright tests
+      shell: bash
       run: bunx playwright test
       env:
         BASE_URL: ${{ inputs.BASE_URL }}
