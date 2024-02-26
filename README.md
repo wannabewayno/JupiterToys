@@ -8,6 +8,13 @@ Running the tests locally will allow you to run tests in parallel mode for faste
 You can either run this locally with Bun (recommended) or with Node.js
 They have their own installation and use instructions.
 
+#### Get the code
+Clone down this repository and then setup the required dependencies
+
+```bash
+
+```
+
 #### Bun
 1. [Install bun](https://bun.sh/docs/installation)
 2. Run `bun install`
@@ -31,7 +38,7 @@ npxx playwright test --headed
 ```
 
 ## CI Installation
-You can opt into these e2e tests via GitHub actions by simply placing the following YAML file into your GitHub repository at `.github/workflows/e2e.yaml
+You can opt into using the e2e tests via GitHub actions by simply placing the following YAML file into your GitHub repository at `.github/workflows/e2e.yaml
 
 ```yaml
 name: End-to-End Tests
@@ -52,13 +59,12 @@ jobs:
 ```
 
 ### What does this do?
-This runs the JupiterToys action to run e2e tests everytime matching branches are pushed to main/master or a pull rquest is opened against main, master.
+This runs the custom JupiterToys Action to run the e2e tests defined in this repository everytime matching branches are pushed to main/master or a pull request is opened against main/master.
 You can configure github to block merging pull requests until tests finish running, and even block the pull request from being merged if you desire. Otherwise github will show the status of this test (pass/fail/running) in the pull requsest UI.
 
-An example can be seen 
 
-### Environemnts
-It would be nice to test our Code before it goes to a hosted environment and on testing/staging builds before it reaches production. The current test runner has the ability to do this with a simple environment variable.
+### CI Environemnts
+It would be nice to test our Code before it goes to a hosted environment and/or to test a hosted environment before it reaches production. The current test runner has the ability to do this with a simple environment variable.
 
 #### BASE_URL
 ```bash
@@ -66,11 +72,14 @@ BASE_URL=http://your.domain.com
 ```
 Setting the ENV var `BASE_URL` before running the action will allow you to target the runner's traffic to that domain.
 
+Simply include this with the `with` parameter when setting up the e2e workflow in your repository.
+
 ### Pre-deployment
-Using this strategy pre-deployment will allow a developer to spin up a webserver locally via checking out the code and running a webserver or spinning up a docker container. The test runner will then make all requests to the BASE_URL instead (hosted on the same machine). This allows you to effectively test code changes pre-deployment so you can take action before anything get's launched to the world.
+A pre-deployment strategy can be setup to ensure that E2E tests are before deploying code to a hosted environment. By spinning up a web server or docker container 
+locally' through a GitHub Actions runner that works in conjunction this custom action, A developer provide the BASE_URL of the web serivice and the test runner will then make all requests to the BASE_URL instead. This allows you to effectively test code changes pre-deployment so you can take action before anything get's launched to the world.
 
 ### Post-deployment
-After a deployment is successfull, set the runner to the BASE_URL of the environment that's been deployed (testing/staging/production) to test that the new deployment works as intended.
+After a deployment is successful, set the runner to the BASE_URL of the environment that's been deployed to (testing/staging/production). This strategy can then be used to test the new deployment works as intended.
 
 ## Future Work
 ### Playwright Abstraction
@@ -81,6 +90,6 @@ We've built some Page Objects and a little POM framework to help us test the Jup
 
 ### Smoke tests
 Over time simulating a browser to run many E2E tests will take time.
-To better utilise resources, I would make some smoke tests that simply navigates to all pages known the applications and attempts to access a key feature of the page.
+To better utilise resources, I would make some smoke tests that simply navigates to all pages known to the application and attempt to access a key feature of the page.
 
 If anything here breaks then there is something wrong with the deployment that likely needs addressing before diving into testing page specific functionality.
