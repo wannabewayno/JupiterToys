@@ -12,7 +12,7 @@ They have their own installation and use instructions.
 Clone down this repository and then setup the required dependencies
 
 ```bash
-
+git clone git@github.com:wannabewayno/JupiterToys.git && cd JupiterToys
 ```
 
 #### Bun
@@ -34,7 +34,7 @@ bunx playwright test --headed
 
 To run in headed mode (to see how the browser is interacting with the page)
 ```bash
-npxx playwright test --headed
+npx playwright test --headed
 ```
 
 ## CI Installation
@@ -62,6 +62,8 @@ jobs:
 This runs the custom JupiterToys Action to run the e2e tests defined in this repository everytime matching branches are pushed to main/master or a pull request is opened against main/master.
 You can configure github to block merging pull requests until tests finish running, and even block the pull request from being merged if you desire. Otherwise github will show the status of this test (pass/fail/running) in the pull requsest UI.
 
+### Custom Action
+A custom action has been orchestrated at the project root with `./action.yaml` using the syntax  `uses: wannabewayno/JupiterToys@master` you can use this test runner in any other GitHub Action CI runner/environment for any custom needs.
 
 ### CI Environemnts
 It would be nice to test our Code before it goes to a hosted environment and/or to test a hosted environment before it reaches production. The current test runner has the ability to do this with a simple environment variable.
